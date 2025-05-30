@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  user_id    String   @id @default(uuid())
+  email      String   @unique
+  password   String
+  first_name String?
+  last_name  String?
+  is_admin   Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  orders     Order[]
+
+  @@map("users")
+}
+
+enum OrderStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+}
+
+model Technology {
+  technology_id   String            @id @default(uuid())
+  title           String
+  OrderTechnology OrderTechnology[]
+
+  @@map("technologies")
+}
+
+model OrderTechnology {
+  order_id      String
+  technology_id String
+  technology    Technology @relation(fields: [technology_id], references: [technology_id])
+  order         Order      @relation(fields: [order_id], references: [order_id])
+
+  @@id([order_id, technology_id])
+  @@map("order_technologies")
+}
+
+model Order {
+  order_id             String            @id @default(uuid())
+  user_id              String
+  team_id              String?
+  title                String
+  description          String
+  created_at           DateTime          @default(now())
+  updated_at           DateTime          @updatedAt
+  estimated_start_date DateTime?
+  estimated_end_date   DateTime?
+  status               OrderStatus       @default(PENDING)
+  total_price          Float?
+  user                 User              @relation(fields: [user_id], references: [user_id])
+  team                 Team?             @relation(fields: [team_id], references: [team_id])
+  order_technologies   OrderTechnology[]
+
+  @@map("orders")
+}
+
+model Team {
+  team_id       String   @id @default(uuid())
+  name          String   @unique
+  orders        Order[]
+  members_count Int      @default(0)
+  experience    Int      @default(1)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  @@map("teams")
+}
