@@ -5,6 +5,8 @@ import { PaginateParams } from 'src/common/params/paginate.params.dto';
 import { seedUsers } from './seed/users.seed';
 import { seedOrders } from 'src/orders/seed/orders.seed';
 import { seedTeams } from 'src/teams/seed/teams.seed';
+import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -29,5 +31,27 @@ export class UsersService {
       skip: paginateParams.skip,
       take: paginateParams.take,
     });
+  }
+
+  async updateMe(updateUserDto: UpdateUserDto, userId: string) {
+    if (updateUserDto.password) {
+      const hashedPassword = await bcrypt.hash(updateUserDto.password, 10);
+      updateUserDto.password = hashedPassword;
+    }
+    return await this.prisma.user.update({
+      where: { user_id: userId },
+      data: updateUserDto,
+    });
+  }
+  async getMe(userId: string) {
+    return await this.prisma.user.findUnique({
+      where: { user_id: userId },
+    });
+  }
+  async isAdmin(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { user_id: userId },
+    });
+    return user?.is_admin;
   }
 }

@@ -1,23 +1,24 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Order, OrderStatus } from 'generated/prisma';
+import { OrderStatus } from 'generated/prisma';
+import { UserEntity } from 'src/users/entities/user.entity';
+import { OrderTeamEntity } from './order-team.entity';
 
-export class OrderEntity implements Order {
+export class OrderEntity {
   @ApiProperty({
     description: 'The ID of the order',
     example: '123e4567-e89b-12d3-a456-426614174000',
   })
   order_id: string;
   @ApiProperty({
-    description: 'The ID of the user',
-    example: '123e4567-e89b-12d3-a456-426614174000',
+    description: 'The user of the order',
+    type: UserEntity,
   })
-  user_id: string;
+  user?: UserEntity;
   @ApiProperty({
-    description: 'The ID of the team',
-    example: '123e4567-e89b-12d3-a456-426614174000',
-    type: String,
+    description: 'The team of the order',
+    type: OrderTeamEntity,
   })
-  team_id: string | null;
+  team?: OrderTeamEntity | null;
   @ApiProperty({
     description: 'The title of the order',
     example: 'Order 1',

@@ -6,5 +6,6 @@ import { PrismaClient } from 'generated/prisma';
 @Module({
   controllers: [UsersController],
   providers: [UsersService, PrismaClient],
+  exports: [UsersService],
 })
 export class UsersModule {}

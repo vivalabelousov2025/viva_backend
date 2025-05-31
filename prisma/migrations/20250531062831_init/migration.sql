@@ -8,6 +8,7 @@ CREATE TABLE "users" (
     "password" TEXT NOT NULL,
     "first_name" TEXT,
     "last_name" TEXT,
+    "is_admin" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -53,6 +54,8 @@ CREATE TABLE "teams" (
     "name" TEXT NOT NULL,
     "members_count" INTEGER NOT NULL DEFAULT 0,
     "experience" INTEGER NOT NULL DEFAULT 1,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "teams_pkey" PRIMARY KEY ("team_id")
 );

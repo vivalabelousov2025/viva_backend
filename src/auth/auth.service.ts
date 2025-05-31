@@ -7,11 +7,11 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { PrismaClient } from 'generated/prisma';
 import { StatusOkDto } from 'src/common/dto/success.dto';
-import { AuthDto } from './dto/auth.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { ConfigService } from '@nestjs/config';
 import { UserEntity } from 'src/users/entities/user.entity';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { RegisterDto } from './dto/register.dto';
 
 interface JwtPayload {
   email: string;
@@ -40,8 +40,15 @@ export class AuthService {
     return null;
   }
 
-  login(loginDto: AuthDto): LoginResponseDto {
-    const payload = { email: loginDto.email, sub: loginDto.password };
+  async login(email: string, password: string) {
+    const user = await this.validateUser(email, password);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    const payload = {
+      email: user.email,
+      sub: user.user_id,
+    };
     return {
       access_token: this.jwtService.sign(payload),
       refresh_token: this.jwtService.sign(payload, {
@@ -51,7 +58,7 @@ export class AuthService {
     };
   }
 
-  async register(registerDto: AuthDto): Promise<StatusOkDto> {
+  async register(registerDto: RegisterDto): Promise<StatusOkDto> {
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
 
     const user = await this.prisma.user.findUnique({
@@ -65,6 +72,8 @@ export class AuthService {
       data: {
         email: registerDto.email,
         password: hashedPassword,
+        first_name: registerDto.first_name,
+        last_name: registerDto.last_name,
       },
     });
 
@@ -90,9 +99,16 @@ export class AuthService {
     if (!decoded) {
       throw new UnauthorizedException('Invalid refresh token');
     }
-    return this.login({
+    const payload = {
       email: decoded.email,
-      password: decoded.sub,
-    });
+      sub: decoded.sub,
+    };
+    return {
+      access_token: this.jwtService.sign(payload),
+      refresh_token: this.jwtService.sign(payload, {
+        secret: this.configService.get('REFRESH_TOKEN_SECRET'),
+        expiresIn: '7d',
+      }),
+    };
   }
 }

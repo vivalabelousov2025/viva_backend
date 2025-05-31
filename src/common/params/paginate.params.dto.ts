@@ -7,12 +7,16 @@ export class PaginateParams {
   @IsOptional()
   @IsInt()
   @Type(() => Number)
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The number of items to skip',
+  })
   skip?: number;
 
   @IsOptional()
   @IsInt()
   @Type(() => Number)
-  @ApiProperty()
+  @ApiProperty({
+    description: 'The number of items to take',
+  })
   take?: number;
 }
