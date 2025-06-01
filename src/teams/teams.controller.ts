@@ -7,11 +7,11 @@ import { TeamEntity } from './entities/team.entity';
 import { FilterParams } from 'src/common/params/filter.params.dto';
 import { SortParams } from 'src/common/params/order.params.dto';
 
-@Controller('teams')
+@Controller('')
 export class TeamsController {
   constructor(private readonly teamsService: TeamsService) {}
 
-  @Get()
+  @Get('teams')
   @ApiOperation({ summary: 'Get all teams' })
   findAll(
     @Query() paginateParams: PaginateParams,
@@ -20,7 +20,7 @@ export class TeamsController {
   ): Promise<TeamEntity[]> {
     return this.teamsService.findAll(paginateParams, filterParams, sortParams);
   }
-  @Get(':id')
+  @Get('teams/:id')
   @ApiResponse({
     status: 200,
     description: 'Team found',
@@ -31,9 +31,10 @@ export class TeamsController {
     return await this.teamsService.findOne(id);
   }
 
-  @Get('by-worker')
-  @ApiOperation({ summary: 'Get teams by worker' })
+  @Get('teams-by-worker')
+  @ApiOperation({ summary: 'Ge teams by worker' })
   async findByWorker(): Promise<TeamWorkerEntity[]> {
+    console.log('findByWorker');
     return await this.teamsService.findByWorker();
   }
 }

@@ -16,7 +16,9 @@ export class WorkerService {
     const response = await firstValueFrom(
       this.httpService.post<ProcessOrderDto>(
         this.configService.get('WORKER_URL') + '/order-process',
-        order,
+        {
+          ...order,
+        },
       ),
     );
     return response.data;

@@ -14,9 +14,9 @@ export class TeamWorkerEntity {
   @ApiProperty({
     description: 'The next free date of the team',
     example: '2021-01-01',
-    type: Date,
+    type: String,
   })
-  next_free_date: Date | null;
+  next_free_date: string;
 
   @ApiProperty({
     description: 'The experience of the team',

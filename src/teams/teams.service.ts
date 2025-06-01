@@ -53,9 +53,16 @@ export class TeamsService {
       },
     });
     return teams.map((team) => {
-      const nextFreeDate = team.orders.reduce((acc, order) => {
-        return acc > order.estimated_end_date! ? acc : order.estimated_end_date;
-      }, new Date());
+      const nextFreeDate = team.orders
+        .reduce((acc, order) => {
+          if (!order.estimated_end_date) return acc;
+          return acc > order.estimated_end_date
+            ? acc
+            : order.estimated_end_date;
+        }, new Date())
+        .toISOString()
+        .split('T')[0];
+
       return {
         team_id: team.team_id,
         current_orders: team.orders.length,

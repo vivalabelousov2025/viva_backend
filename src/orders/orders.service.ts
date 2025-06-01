@@ -85,7 +85,10 @@ export class OrdersService {
     return order;
   }
 
-  async createOrder(createOrderDto: CreateOrderDto, userId: string) {
+  async createOrder(
+    createOrderDto: CreateOrderDto,
+    userId: string,
+  ): Promise<StatusOkDto> {
     const order = await this.prisma.order.create({
       data: {
         title: createOrderDto.title,
@@ -93,8 +96,8 @@ export class OrdersService {
         user_id: userId,
       },
     });
-    // await this.workerService.processOrder(order);
-    return order;
+    await this.workerService.processOrder(order);
+    return new StatusOkDto();
   }
 
   async rejectOrder(rejectOrderDto: RejectOrderDto): Promise<StatusOkDto> {
@@ -115,6 +118,7 @@ export class OrdersService {
   }
 
   async processOrder(processOrderDto: ProcessOrderDto) {
+    console.log(processOrderDto);
     const order = await this.prisma.order.findUnique({
       where: { order_id: processOrderDto.order_id },
     });

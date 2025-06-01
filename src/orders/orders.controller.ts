@@ -19,6 +19,7 @@ import { FilterParams } from 'src/common/params/filter.params.dto';
 import { SortParams } from 'src/common/params/order.params.dto';
 import { OrderParams } from './params/order.params.dto';
 import { OrderActionEntity } from './entities/order-action.entity';
+import { StatusOkDto } from 'src/common/dto/success.dto';
 
 @Controller()
 export class OrdersController {
@@ -67,7 +68,7 @@ export class OrdersController {
   async createOrder(
     @Body() createOrderDto: CreateOrderDto,
     @CurrentUser() user: UserEntity,
-  ) {
+  ): Promise<StatusOkDto> {
     return await this.ordersService.createOrder(createOrderDto, user.user_id);
   }
 

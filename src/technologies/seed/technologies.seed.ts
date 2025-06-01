@@ -2,27 +2,27 @@ import { PrismaClient } from 'generated/prisma';
 
 export const technologies = [
   {
-    technology_id: '1',
+    technology_id: crypto.randomUUID(),
     title: 'React',
   },
   {
-    technology_id: '2',
+    technology_id: crypto.randomUUID(),
     title: 'Node.js',
   },
   {
-    technology_id: '3',
+    technology_id: crypto.randomUUID(),
     title: 'Next.js',
   },
   {
-    technology_id: '4',
+    technology_id: crypto.randomUUID(),
     title: 'TypeScript',
   },
   {
-    technology_id: '5',
+    technology_id: crypto.randomUUID(),
     title: 'JavaScript',
   },
   {
-    technology_id: '6',
+    technology_id: crypto.randomUUID(),
     title: 'Python',
   },
 ];
