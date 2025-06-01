@@ -20,6 +20,7 @@ import { SortParams } from 'src/common/params/order.params.dto';
 import { OrderParams } from './params/order.params.dto';
 import { OrderActionEntity } from './entities/order-action.entity';
 import { StatusOkDto } from 'src/common/dto/success.dto';
+import { ChangeTeamDto } from './dto/change-team.dto';
 
 @Controller()
 export class OrdersController {
@@ -78,5 +79,13 @@ export class OrdersController {
   @ApiOperation({ summary: 'Find actions on order' })
   async findActions(): Promise<OrderActionEntity[]> {
     return await this.ordersService.findActions();
+  }
+
+  @Post('orders/change-team')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('Bearer')
+  @ApiOperation({ summary: 'Change team on order' })
+  async changeTeam(@Body() changeTeamDto: ChangeTeamDto): Promise<StatusOkDto> {
+    return await this.ordersService.changeTeam(changeTeamDto);
   }
 }

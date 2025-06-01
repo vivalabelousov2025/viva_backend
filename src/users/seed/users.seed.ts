@@ -6,7 +6,7 @@ const prisma = new PrismaClient(); // eslint-disable-line new-cap
 export const seedUsers = async () => {
   const users = [
     {
-      user_id: '1',
+      user_id: crypto.randomUUID(),
       email: 'test@test.com',
       password: await bcrypt.hash('password', 10),
       first_name: 'John',
@@ -15,7 +15,7 @@ export const seedUsers = async () => {
       updated_at: new Date(),
     },
     {
-      user_id: '2',
+      user_id: crypto.randomUUID(),
       email: 'test2@test.com',
       password: await bcrypt.hash('password1', 10),
       first_name: 'Will',
@@ -24,7 +24,7 @@ export const seedUsers = async () => {
       updated_at: new Date(),
     },
     {
-      user_id: '3',
+      user_id: crypto.randomUUID(),
       email: 'test3@test.com',
       password: await bcrypt.hash('password2', 10),
       first_name: 'Mike',

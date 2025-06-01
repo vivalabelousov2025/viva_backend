@@ -5,7 +5,7 @@ const prisma = new PrismaClient(); // eslint-disable-line new-cap
 export const seedTeams = async () => {
   const teams: Team[] = [
     {
-      team_id: '1',
+      team_id: crypto.randomUUID(),
       name: 'Team 1',
       members_count: 1,
       experience: 1,
@@ -13,7 +13,7 @@ export const seedTeams = async () => {
       updated_at: new Date(),
     },
     {
-      team_id: '2',
+      team_id: crypto.randomUUID(),
       name: 'Team 2',
       members_count: 2,
       experience: 2,
@@ -21,7 +21,7 @@ export const seedTeams = async () => {
       updated_at: new Date(),
     },
     {
-      team_id: '3',
+      team_id: crypto.randomUUID(),
       name: 'Team 3',
       members_count: 3,
       experience: 3,

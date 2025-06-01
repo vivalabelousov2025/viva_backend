@@ -3,7 +3,6 @@ import { PrismaClient } from 'generated/prisma';
 import { UserEntity } from './entities/user.entity';
 import { PaginateParams } from 'src/common/params/paginate.params.dto';
 import { seedUsers } from './seed/users.seed';
-import { seedOrders } from 'src/orders/seed/orders.seed';
 import { seedTeams } from 'src/teams/seed/teams.seed';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -20,10 +19,6 @@ export class UsersService {
     const teams = await this.prisma.team.findMany();
     if (teams.length === 0) {
       await seedTeams();
-    }
-    const orders = await this.prisma.order.findMany();
-    if (orders.length === 0) {
-      await seedOrders();
     }
   }
   async findAll(paginateParams: PaginateParams): Promise<UserEntity[]> {

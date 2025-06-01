@@ -17,6 +17,7 @@ import { SortParams } from 'src/common/params/order.params.dto';
 import { UsersService } from 'src/users/users.service';
 import { OrderParams } from './params/order.params.dto';
 import { OrderActionEntity } from './entities/order-action.entity';
+import { ChangeTeamDto } from './dto/change-team.dto';
 
 @Injectable()
 export class OrdersService {
@@ -113,6 +114,29 @@ export class OrdersService {
     await this.prisma.order.update({
       where: { order_id: rejectOrderDto.order_id },
       data: { status: 'REJECTED' },
+    });
+    return new StatusOkDto();
+  }
+
+  async changeTeam(changeTeamDto: ChangeTeamDto) {
+    const order = await this.prisma.order.findUnique({
+      where: { order_id: changeTeamDto.order_id },
+    });
+    if (!order) {
+      throw new NotFoundException('Order not found');
+    }
+    if (order.status !== 'IN_PROGRESS') {
+      throw new BadRequestException('Order is not in progress');
+    }
+    const team = await this.prisma.team.findUnique({
+      where: { team_id: changeTeamDto.team_id },
+    });
+    if (!team) {
+      throw new NotFoundException('Team not found');
+    }
+    await this.prisma.order.update({
+      where: { order_id: changeTeamDto.order_id },
+      data: { team_id: changeTeamDto.team_id },
     });
     return new StatusOkDto();
   }

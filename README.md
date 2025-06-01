@@ -1,3 +1,98 @@
+# Viva Backend API
+
+## Описание
+
+Backend API для системы управления заказами и командами.
+
+## Документация API
+
+Swagger UI доступен по следующим адресам:
+
+- [Основная документация](http://localhost:3000/api)
+- [JSON схема](http://localhost:3000/api-json)
+
+## Основные эндпоинты
+
+### Заказы
+
+- `GET /orders` - Получить список заказов
+- `GET /orders/:id` - Получить заказ по ID
+- `POST /orders` - Создать новый заказ
+- `POST /orders/:id/reject` - Отклонить заказ
+- `POST /orders/:id/process` - Обработать заказ
+- `POST /orders/:id/change-team` - Изменить команду для заказа
+
+### Команды
+
+- `GET /teams` - Получить список команд
+- `GET /teams/:id` - Получить команду по ID
+- `GET /teams/by-worker` - Получить список команд с информацией о загрузке
+
+### Пользователи
+
+- `GET /users` - Получить список пользователей
+- `GET /users/:id` - Получить пользователя по ID
+
+## Установка и запуск
+
+1. Установите pnpm, если еще не установлен:
+
+```bash
+npm install -g pnpm
+```
+
+2. Установите зависимости:
+
+```bash
+pnpm install
+```
+
+3. Создайте файл .env и настройте переменные окружения:
+
+```env
+# База данных
+POSTGRES_USER=viva
+POSTGRES_PASSWORD=viva
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=viva
+DATABASE_URL="postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public"
+
+APP_PORT=8000
+
+WORKER_URL=http://194.87.118.240:8010
+
+JWT_SECRET=viva_secret
+
+DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
+
+
+4. Примените миграции:
+
+```bash
+pnpm prisma migrate dev
+```
+
+5. Запустите сервер:
+
+```bash
+# Режим разработки
+pnpm run start:dev
+
+# Продакшн режим
+pnpm run start:prod
+```
+
+## Технологии
+
+- NestJS
+- Prisma
+- PostgreSQL
+- Swagger/OpenAPI
+- pnpm
+- RabbitMQ
+- Redis
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
 </p>
