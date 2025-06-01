@@ -7,9 +7,10 @@ Backend API для системы управления заказами и ко�
 ## Документация API
 
 Swagger UI доступен по следующим адресам:
+http://194.87.118.240:8000
 
-- [Основная документация](http://localhost:3000/api)
-- [JSON схема](http://localhost:3000/api-json)
+- [Основная документация](http://194.87.118.240:8000/api)
+- [JSON схема](http://194.87.118.240:8000/api-json)
 
 ## Основные эндпоинты
 
@@ -49,7 +50,7 @@ pnpm install
 
 3. Создайте файл .env и настройте переменные окружения:
 
-```env
+````env
 # База данных
 POSTGRES_USER=viva
 POSTGRES_PASSWORD=viva
@@ -71,7 +72,7 @@ DATABASE_URL="postgresql://user:password@localhost:5432/dbname"
 
 ```bash
 pnpm prisma migrate dev
-```
+````
 
 5. Запустите сервер:
 
@@ -90,8 +91,6 @@ pnpm run start:prod
 - PostgreSQL
 - Swagger/OpenAPI
 - pnpm
-- RabbitMQ
-- Redis
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
